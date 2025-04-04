@@ -1,17 +1,22 @@
 #include <iostream>
 #include <string>
+
 using namespace std;
-
 class University {
-public:
-    static string universityName;
+private:
+    static string universityName;  // Static variable to store university name
 
-    final void getUniversityDetails() const {
+public:
+    static void changeUniversityName(const string& name) {
+        universityName = name;
+    }
+
+    void getUniversityDetails() const {
         cout << "University Name: " << universityName << endl;
     }
 
-    static void changeUniversityName(const string& name) {
-        universityName = name;
+    University() {
+        universityName = "XYZ University";
     }
 };
 
@@ -22,56 +27,46 @@ private:
     int studentID;
     string studentName;
     string course;
-    const int admissionYear; // Final attribute, can't be modified after assignment
+    static int totalStudents;  // Static variable to keep track of the total number of students
 
 public:
-    // Static attribute to track total number of students
-    static int totalStudents;
+    const int admissionYear;  // Final variable for admission year (once assigned, it cannot be changed)
 
-    // Constructor to initialize student details and increment totalStudents
-    Student(int id, const string& name, const string& course, int admissionYear)
-        : studentID(id), studentName(name), course(course), admissionYear(admissionYear) {
-        totalStudents++;
+    Student(int id, const string& name, const string& course, int year)
+        : studentID(id), studentName(name), course(course), admissionYear(year) {
+        totalStudents++;  // Increment the total number of students whenever a new student is created
     }
 
-    // Function to display student details
+    static int getTotalStudents() {
+        return totalStudents;
+    }
+
     void displayStudentDetails() const {
         cout << "Student ID: " << studentID << endl;
         cout << "Student Name: " << studentName << endl;
         cout << "Course: " << course << endl;
         cout << "Admission Year: " << admissionYear << endl;
     }
-
-    // Function to get total number of students
-    static int getTotalStudents() {
-        return totalStudents;
-    }
 };
 
 int Student::totalStudents = 0;
 
 int main() {
-    cout << "Initial University Details:" << endl;
     University u1;
-    u1.getUniversityDetails();
+    u1.getUniversityDetails();  // Display the initial university name
 
-    // Change the university name
-    cout << "\nChanging University Name..." << endl;
     University::changeUniversityName("ABC University");
+    u1.getUniversityDetails();  // Display the updated university name
 
-    cout << "\nUpdated University Details:" << endl;
-    u1.getUniversityDetails();
+    Student s1(101, "Soham", "Computer Science", 2020);
+    Student s2(102, "Swapnil", "Mechanical Engineering", 2021);
 
-    cout << "\nCreating Students..." << endl;
-    Student s1(1, "John Doe", "Computer Science", 2021);
-    Student s2(2, "Jane Smith", "Electrical Engineering", 2020);
-
-    cout << "\nStudent Details:" << endl;
+    cout << endl;
     s1.displayStudentDetails();
     cout << endl;
     s2.displayStudentDetails();
 
-    cout << "\nTotal Students Enrolled: " << Student::getTotalStudents() << endl;
+    cout << "\nTotal Students: " << Student::getTotalStudents() << endl;
 
     return 0;
 }
